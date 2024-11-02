@@ -44,7 +44,8 @@ class ImageerrorAnalysisagent():
                 
                 return response.message
             except Exception as e:
-                return e
+                self.langfuse_client.log_and_raise_error(f"ImageanalysisAgent -> _get_response_from_openai: An error occurred: {e}", self.conversation.trace_id)
+            
         
         
         txts_frm_images = [extract_text_frm_image(base64_image) for base64_image in base64_images]
@@ -70,9 +71,12 @@ class LogFilesAnalysisagentCSV():
         self.langfuse_client = LangfuseClient()
         self.openai_client = OpenAIClient()
         self.data_processing = DataProcessing_csv()
+        self.conversation = Conversation()
     
     async def execute_agent(self, dataframes):
         """Main method to execute log analysis agent."""
+        if self.conversation.trace_id is None:
+            self.conversation.trace_id = self._start_trace()
         
         async def process_data(dataframe): 
             parsed_data = await self.data_processing.parse_logs(dataframe)
@@ -106,7 +110,8 @@ class LogFilesAnalysisagentCSV():
                 
                 return response.message
             except Exception as e:
-                return e
+                self.langfuse_client.log_and_raise_error(f"LogfileanalysisAgent_csv -> _get_response_from_openai: An error occurred: {e}", self.conversation.trace_id)
+              
         
         """Main part to execute log analysis agent."""
         
@@ -119,7 +124,19 @@ class LogFilesAnalysisagentCSV():
         
         return markdown_reports_forms
         
-
+    def _start_trace(self):
+        """Helper method to start a new trace and return its ID."""
+        if self.langfuse_client.langfuse:
+            trace = self.langfuse_client.langfuse.trace(
+                name="Image-Files-Analysis-Agent",
+                input=self.conversation.query,
+                start_time=time.time(),
+                tags=["development"],
+                public=False,
+            )
+            return trace.id
+        else:
+            return None 
 
 class LogFilesAnalysisAgentLog:
     def __init__(self):
@@ -167,7 +184,8 @@ class LogFilesAnalysisAgentLog:
                 
                 return response.message 
             except Exception as e:
-                return str(e)
+                self.langfuse_client.log_and_raise_error(f"LogfileanalysisAgent_log -> _get_response_from_openai: An error occurred: {e}", self.conversation.trace_id)
+                
         
         markdown_reports , log_file_names = await process_data(log_file_paths)
         

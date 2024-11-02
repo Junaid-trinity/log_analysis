@@ -6,21 +6,43 @@ import streamlit as st
 from dotenv import load_dotenv
 import os
 import gitlab
+from langfuse_client import LangfuseClient
+import time 
+from schemas import   Conversation
 
 class DataIngestion:
     def __init__(self):
         load_dotenv(override=True)  # Load environment variables from .env file
+        self.langfuse_client = LangfuseClient()
+        self.conversation = Conversation()
+        
+    def _start_trace(self):
+        """Helper method to start a new trace and return its ID."""
+        if self.langfuse_client.langfuse:
+            trace = self.langfuse_client.langfuse.trace(
+                name="Image-Files-Analysis-Agent",
+                input=self.conversation.query,
+                start_time=time.time(),
+                tags=["development"],
+                public=False,
+            )
+            return trace.id
+        else:
+            return None
 
     async def load_error_log(self, uploaded_files):
         """Asynchronously processes multiple error log files in parallel."""
         
         async def load_single_file(file):
             """Asynchronously loads a single CSV file."""
+            if self.conversation.trace_id is None:
+                self.conversation.trace_id = self._start_trace()
             try:
                 data = pd.read_csv(file)
                 return data
             except Exception as e:
-                print(f"Error loading file {file.name}: {e}")
+                self.langfuse_client.log_and_raise_error(f"DataIngestion_pipeline -> Error loading file {file.name}: {e}", self.conversation.trace_id)
+
                 return None
         
         # Process all files concurrently
@@ -36,7 +58,7 @@ class DataIngestion:
             projects = gl.projects.list(membership=True, as_list=False)
             return [(project.id, project.name) for project in projects]
         except Exception as e:
-            st.error(f"Error fetching GitLab projects: {str(e)}")
+            self.langfuse_client.log_and_raise_error(f"DataIngestion_pipeline -> Error fetching GitLab projects: {str(e)}", self.conversation.trace_id)
             return []
 
     async def fetch_log_files(self, project_id):
@@ -76,5 +98,6 @@ class DataIngestion:
             return log_file_paths
 
         except Exception as e:
-            st.error(f"Error fetching log files: {str(e)}")
+            self.langfuse_client.log_and_raise_error(f"DataIngestion_pipeline -> Error fetching log files from gitlab: {str(e)}", self.conversation.trace_id)
             return []
+
