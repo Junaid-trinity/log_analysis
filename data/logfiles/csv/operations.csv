@@ -1,0 +1,152 @@
+Timestamp,Operation,Code,Result,Status,Error
+2024-10-27 19:06:06,application_start,,,success,
+2024-10-27 19:06:06,application_start,,,success,
+2024-10-27 19:06:32,code_execution,"print(""Hello, World!"")","Hello, World!
+",success,
+2024-10-27 19:06:54,code_execution,"print(""Hello, World!"")","Hello, World!
+",success,
+2024-10-27 19:06:58,code_execution,dggv,,error,"Traceback (most recent call last):
+  File ""C:\Users\Junaid\Desktop\Amgen\log_analysis\learn\python_web_application\temp\code_20241027_190658.py"", line 1, in <module>
+    dggv
+NameError: name 'dggv' is not defined
+"
+2024-10-27 19:08:57,code_execution,"import csv
+
+# Open the CSV file in read mode
+with open('data.csv', mode='r') as file:
+    reader = csv.reader(file)
+    
+    # Iterate over each row in the CSV file
+    for row in reader:
+        print(row)  # Each row is a list of values
+",,error,"Traceback (most recent call last):
+  File ""C:\Users\Junaid\Desktop\Amgen\log_analysis\learn\python_web_application\temp\code_20241027_190857.py"", line 4, in <module>
+    with open('data.csv', mode='r') as file:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data.csv'
+"
+2024-10-27 19:08:59,code_execution,"import csv
+
+# Open the CSV file in read mode
+with open('data.csv', mode='r') as file:
+    reader = csv.reader(file)
+    
+    # Iterate over each row in the CSV file
+    for row in reader:
+        print(row)  # Each row is a list of values
+",,error,"Traceback (most recent call last):
+  File ""C:\Users\Junaid\Desktop\Amgen\log_analysis\learn\python_web_application\temp\code_20241027_190859.py"", line 4, in <module>
+    with open('data.csv', mode='r') as file:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data.csv'
+"
+2024-10-27 19:09:33,code_execution,"def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return -1  # Target not found
+
+# Example usage
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+target = 5
+print(""Element found at index:"", binary_search(arr, target))
+","Element found at index: 4
+",success,
+2024-10-27 19:09:43,code_execution,"def dfs(graph, start, visited=set()):
+    if start not in visited:
+        print(start, end=' ')
+        visited.add(start)
+        
+        for neighbor in graph[start]:
+            dfs(graph, neighbor, visited)
+
+# Example graph represented as an adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+# Start DFS from node 'A'
+print(""DFS Traversal:"")
+dfs(graph, 'A')
+","DFS Traversal:
+A B D E F C ",success,
+2024-10-27 19:09:52,code_execution,"from collections import deque
+
+def bfs(graph, start):
+    visited = set()
+    queue = deque([start])
+    
+    while queue:
+        node = queue.popleft()
+        
+        if node not in visited:
+            print(node, end=' ')
+            visited.add(node)
+            
+            for neighbor in graph[node]:
+                queue.append(neighbor)
+
+# Example graph represented as an adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+# Start BFS from node 'A'
+print(""BFS Traversal:"")
+bfs(graph, 'A')
+","BFS Traversal:
+A B C D E F ",success,
+2024-10-27 19:10:02,code_execution,"def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
+
+# Example usage
+arr = [3, 6, 8, 10, 1, 2, 1]
+print(""Sorted array:"", quicksort(arr))
+","Sorted array: [1, 1, 2, 3, 6, 8, 10]
+",success,
+2024-10-27 19:10:06,code_execution,"def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
+
+# Example usage
+arr = [3, 6, 8, 10, 1, 2, 1]
+print(""Sorted array:"", quicksort(arr)
+",,error,"  File ""C:\Users\Junaid\Desktop\Amgen\log_analysis\learn\python_web_application\temp\code_20241027_191006.py"", line 12
+    print(""Sorted array:"", quicksort(arr)
+         ^
+SyntaxError: '(' was never closed
+"
+2024-10-28 12:35:20,application_start,,,success,
+2024-10-28 12:35:23,application_start,,,success,
+2024-10-28 12:41:17,application_start,,,success,
+2024-10-28 12:41:17,application_start,,,success,

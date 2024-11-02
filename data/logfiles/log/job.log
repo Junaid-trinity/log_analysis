@@ -1,0 +1,123 @@
+[0KRunning with gitlab-runner 17.4.0 (b92ee590)[0;m
+[0K  on gitlab-gitlab-runner-844b9975d4-f6skx Lg9ymNbPv, system ID: r_vJinm12pNPh5[0;m
+[0K[36;1mResolving secrets[0;m[0;m
+section_start:1730220711:prepare_executor
+[0K[0K[36;1mPreparing the "kubernetes" executor[0;m[0;m
+[0KUsing Kubernetes namespace: gitlab-cloud-native[0;m
+[0KUsing Kubernetes executor with image registry.nimbus.amgen.com/gitlabautomationpipelines/devsecops-standardization/containers/veracode-sca:latest ...[0;m
+[0KUsing attach strategy to execute scripts...[0;m
+section_end:1730220711:prepare_executor
+[0Ksection_start:1730220711:prepare_script
+[0K[0K[36;1mPreparing environment[0;m[0;m
+[0KUsing FF_USE_POD_ACTIVE_DEADLINE_SECONDS, the Pod activeDeadlineSeconds will be set to the job timeout: 1h0m0s...[0;m
+Waiting for pod gitlab-cloud-native/runner-lg9ymnbpv-project-29069-concurrent-1-q66ei5dj to be running, status is Pending
+Running on runner-lg9ymnbpv-project-29069-concurrent-1-q66ei5dj via gitlab-gitlab-runner-844b9975d4-f6skx...
+
+section_end:1730220715:prepare_script
+[0Ksection_start:1730220715:get_sources
+[0K[0K[36;1mGetting source from Git repository[0;m[0;m
+[32;1mFetching changes with git depth set to 20...[0;m
+Initialized empty Git repository in /builds/gitlab-marketingai/rep-alerts/repatha_crm_journey/.git/
+[32;1mCreated fresh repository.[0;m
+[32;1mChecking out 233d64e2 as detached HEAD (ref is release)...[0;m
+
+[32;1mSkipping Git submodules setup[0;m
+
+section_end:1730220718:get_sources
+[0Ksection_start:1730220718:restore_cache
+[0K[0K[36;1mRestoring cache[0;m[0;m
+[32;1mChecking cache for 0_package-lock-default-non_protected...[0;m
+Downloading cache from https://com-amgen-gitlab-cache-20210814054229867600000002.s3.dualstack.us-west-2.amazonaws.com/runner/project/29069/0_package-lock-default-non_protected[0;m  ETag[0;m="76cdb2bad9582d23c1f6f4d868218d6c"
+[32;1mSuccessfully extracted cache[0;m
+
+section_end:1730220719:restore_cache
+[0Ksection_start:1730220719:download_artifacts
+[0K[0K[36;1mDownloading artifacts[0;m[0;m
+[32;1mDownloading artifacts for gitleaks (2901944)...[0;m
+Downloading artifacts from coordinator... ok      [0;m  host[0;m=gitlab.nimbus.amgen.com id[0;m=2901944 responseStatus[0;m=200 OK token[0;m=glcbt-64
+[32;1mDownloading artifacts for Veracode Package (2901945)...[0;m
+Downloading artifacts from coordinator... ok      [0;m  host[0;m=gitlab.nimbus.amgen.com id[0;m=2901945 responseStatus[0;m=200 OK token[0;m=glcbt-64
+
+section_end:1730220720:download_artifacts
+[0Ksection_start:1730220720:step_script
+[0K[0K[36;1mExecuting "step_script" stage of the job script[0;m[0;m
+[32;1m$ curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan --debug | tee veracode_sca_vulnerabilities.json[0;m
+2024-10-29/16:52:09.336 io.sentry.SentryClient	DEBUG	Adding 'com.sourceclear.agent.services.ErrorRecordServiceImpl$$Lambda$66/0x000000080023d138@5b408dc3' to the list of builder helpers.
+2024-10-29/16:52:09.481 com.sourceclear.agent.util.TrustManagerFromEnv	DEBUG	Skipping additional SSL Trust Manager configuration because both $SRCCLR_SSL_CERT_DIR and $SRCCLR_SSL_CERT_FILE are blank
+2024-10-29/16:52:09.485 com.sourceclear.agent.EntryPointImpl	DEBUG	Executing scan with com.sourceclear.agent.commands.ScanCommand
+2024-10-29/16:52:09.485 com.sourceclear.agent.EntryPointImpl	DEBUG	Veracode SCA Agent/3.8.77 (Azul Systems, Inc./17.0.6+10-LTS; arch="amd64" name="Linux" version="5.10.225-213.878.amzn2.x86_64" language="en" timezone="GMT")
+2024-10-29/16:52:09.486 com.sourceclear.agent.EntryPointImpl	DEBUG	JVM max. memory size := 7 GB
+2024-10-29/16:52:09.489 com.sourceclear.agent.EntryPointImpl	DEBUG	Verb Options := verbOpts = {\n}\nleft-overs = []
+2024-10-29/16:52:09.489 com.sourceclear.agent.services.LicenseServiceImpl	INFO	Checking Agent authentication against the Veracode SCA API...
+2024-10-29/16:52:09.763 com.sourceclear.api.client.SourceClearClient	DEBUG	HTTPS connection is expanded to accept wider range of ciphers
+2024-10-29/16:52:11.626 com.sourceclear.agent.commands.ScanCommand	INFO	Srcclr is scanning the folder: /builds/gitlab-marketingai/rep-alerts/repatha_crm_journey
+2024-10-29/16:52:11.666 com.sourceclear.util.io.GitUtils	DEBUG	SRCCLR_GIT_CEILING_DIR=Optional.empty
+2024-10-29/16:52:14.906 com.sourceclear.agent.commands.ScanCommand	DEBUG	Scanning local directory with upload. Repo is clean. Proceeding...
+2024-10-29/16:52:14.907 com.sourceclear.agent.commands.ScanCommand	DEBUG	Scan collectors: 
+2024-10-29/16:52:14.907 com.sourceclear.agent.commands.ScanCommand	DEBUG	Skip collectors: 
+2024-10-29/16:52:14.907 com.sourceclear.agent.commands.ScanCommand	DEBUG	Skip vulnerable methods: false
+2024-10-29/16:52:14.910 com.sourceclear.agent.commands.ScanCommand	DEBUG	Setup completed in 3s
+2024-10-29/16:52:14.913 com.sourceclear.agent.services.ScanServiceImpl	DEBUG	scanDir : /builds/gitlab-marketingai/rep-alerts/repatha_crm_journey
+2024-10-29/16:52:14.913 com.sourceclear.agent.services.ScanServiceImpl	DEBUG	scanDir is directory: true
+2024-10-29/16:52:14.913 com.sourceclear.util.io.GitUtils	DEBUG	SRCCLR_GIT_CEILING_DIR=Optional.empty
+2024-10-29/16:52:14.922 com.sourceclear.agent.services.ScanServiceImpl	DEBUG	MetaGit: MetaGit[localPath=file:/builds/gitlab-marketingai/rep-alerts/repatha_crm_journey/, subPath='', remote=https://gitlab-ci-token@gitlab.nimbus.amgen.com/gitlab-marketingai/rep-alerts/repatha_crm_journey.git, head='233d64e28c601f21fbd267d3c6d24364b1113177', refName='release', refType=BRANCH]
+2024-10-29/16:52:14.922 com.sourceclear.agent.services.ScanServiceImpl	DEBUG	Include Dockerfile scan: false
+2024-10-29/16:52:14.922 com.sourceclear.agent.services.ScanServiceImpl	DEBUG	Allow scan to proceed without a build system: false
+2024-10-29/16:52:14.938 com.sourceclear.engine.component.ComponentEngineBuilder	DEBUG	collectorsToRun: []
+2024-10-29/16:52:14.939 com.sourceclear.engine.component.ComponentEngineBuilder	DEBUG	collectorsToSkip: []
+2024-10-29/16:52:15.033 com.sourceclear.agent.EntryPointImpl	DEBUG	Exiting with 1
+
+com.sourceclear.agent.FatalException: No supported build system found. Please see our list of supported systems at https://help.veracode.com/go/c_sc_supported_lang.
+	at com.sourceclear.agent.commands.ScanCommand.handleScanErrors(ScanCommand.java:1180)
+	at com.sourceclear.agent.commands.ScanCommand.executeRepoScan(ScanCommand.java:976)
+	at com.sourceclear.agent.commands.ScanCommand.execute(ScanCommand.java:658)
+	at com.sourceclear.agent.EntryPointImpl.runVerb(EntryPointImpl.java:382)
+	at com.sourceclear.agent.EntryPointImpl.dispatchVerbOptions(EntryPointImpl.java:331)
+	at com.sourceclear.agent.EntryPointImpl.apply(EntryPointImpl.java:156)
+	at com.sourceclear.agent.Main.start(Main.java:118)
+	at com.sourceclear.agent.Main.main(Main.java:123)
+Caused by: 
+	com.sourceclear.engine.common.CollectionException: No supported build system found. Please see our list of supported systems at https://help.veracode.com/go/c_sc_supported_lang.
+		at com.sourceclear.engine.component.ComponentEngineBuilder.build(ComponentEngineBuilder.java:926)
+		at com.sourceclear.agent.services.ScanServiceImpl.getComponentEngine(ScanServiceImpl.java:584)
+		at com.sourceclear.agent.services.ScanServiceImpl.performScan(ScanServiceImpl.java:337)
+		at com.sourceclear.agent.commands.ScanCommand.lambda$executeRepoScan$5(ScanCommand.java:984)
+		at com.sourceclear.agent.commands.ScanCommand.handleScanErrors(ScanCommand.java:1160)
+		at com.sourceclear.agent.commands.ScanCommand.executeRepoScan(ScanCommand.java:976)
+		at com.sourceclear.agent.commands.ScanCommand.execute(ScanCommand.java:658)
+		at com.sourceclear.agent.EntryPointImpl.runVerb(EntryPointImpl.java:382)
+		at com.sourceclear.agent.EntryPointImpl.dispatchVerbOptions(EntryPointImpl.java:331)
+		at com.sourceclear.agent.EntryPointImpl.apply(EntryPointImpl.java:156)
+		at com.sourceclear.agent.Main.start(Main.java:118)
+		at com.sourceclear.agent.Main.main(Main.java:123)
+
+
+No supported build system found. Please see our list of supported systems at https://help.veracode.com/go/c_sc_supported_lang.
+
+
+section_end:1730220735:step_script
+[0Ksection_start:1730220735:upload_artifacts_on_failure
+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+[32;1mUploading artifacts...[0;m
+veracode_sca_vulnerabilities.json: found 1 matching artifact files and directories[0;m 
+Uploading artifacts as "archive" to coordinator... 201 Created[0;m  id[0;m=2901947 responseStatus[0;m=201 Created token[0;m=glcbt-64
+
+section_end:1730220736:upload_artifacts_on_failure
+[0Ksection_start:1730220736:cleanup_file_variables
+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+
+section_end:1730220737:cleanup_file_variables
+[0K[31;1mERROR: Job failed: command terminated with exit code 1
+[0;m
+
+
+ERROR: ModuleNotFoundError: No module named 'requests'
+File "/usr/src/app/main.py", line 42, in <module>
+    import requests
+ERROR: NullPointerException: Cannot invoke "String.toLowerCase()" because "inputString" is null
+File "/src/utils/StringUtils.java", line 45, in formatString
+    return inputString.toLowerCase();
+ERROR: ZeroDivisionError: division by zero
+File "/app/calculations.py", line 23, in calculate_average
+    result = total / count
+

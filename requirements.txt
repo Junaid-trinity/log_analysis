@@ -1,0 +1,27 @@
+# requirements.txt
+
+# Streamlit for the front-end interface
+streamlit==1.25.0
+
+# Pandas for data manipulation
+pandas==1.5.3
+
+# aiohttp for asynchronous HTTP requests to GitLab
+aiohttp==3.8.5
+
+# OpenAI library for GenAI analysis
+openai==1.52.2
+
+# Jinja2 for report template rendering
+Jinja2==3.1.2
+
+# Streamlit Authenticator for authentication
+streamlit-authenticator==0.2.3
+
+# Cryptography for data encryption and decryption
+cryptography==41.0.3
+
+python-dotenv==1.0.1
+python-gitlab
+
+tiktoken

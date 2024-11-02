@@ -1,0 +1,3 @@
+Title,Description,MR IID,URL,State,Source Branch,Target Branch,Source Project ID,Target Project ID,Author,Author Username,Assignees,Assignee Usernames,Approvers,Approver Usernames,Merged User,Merged Username,Milestone ID,Created At (UTC),Updated At (UTC)
+Pushing local code to my-new-branch,"",1,https://gitlab.com/robinfirstproject/ci_cd_learn/-/merge_requests/1,merged,dev,main,63007265,63007265,junaid,robinfirstproject,"","",junaid,robinfirstproject,junaid,robinfirstproject,"",2024-10-27 07:19:01 UTC,2024-10-27 07:21:14 UTC
+Draft: Dev,"",2,https://gitlab.com/robinfirstproject/ci_cd_learn/-/merge_requests/2,closed,dev,main,63007265,63007265,junaid,robinfirstproject,"","","","","","","",2024-10-27 09:27:17 UTC,2024-10-27 09:27:53 UTC
