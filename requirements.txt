@@ -25,3 +25,7 @@ python-dotenv==1.0.1
 python-gitlab
 
 tiktoken
+langfuse
+aiofiles
+tiktoken
+python-docx
