@@ -60,7 +60,63 @@ class DataIngestion:
         except Exception as e:
             self.langfuse_client.log_and_raise_error(f"DataIngestion_pipeline -> Error fetching GitLab projects: {str(e)}", self.conversation.trace_id)
             return []
+    
+    
+        # Additional helper functions for data_ingestion
+    async def get_gitlab_branches(self, project_id):
+        """Fetches branches for a given GitLab project."""
+        try:
+            GITLAB_URL = os.getenv("GITLAB_URL")
+            ACCESS_TOKEN = os.getenv("gitlab_key")
+            gl = gitlab.Gitlab(GITLAB_URL, private_token=ACCESS_TOKEN)
+            project = gl.projects.get(project_id)
+            branches = project.branches.list()
+            return [(branch.name, branch.name) for branch in branches]
+        except Exception as e:
+            self.langfuse_client.log_and_raise_error(f"DataIngestion_pipeline -> Error fetching branches: {str(e)}", self.conversation.trace_id)
+            return []
 
+    async def get_gitlab_log_files(self, project_id, branch_name, log_path):
+        """Fetches log files (names and contents) asynchronously from a specific path in a GitLab project branch."""
+        try:
+            GITLAB_URL = os.getenv("GITLAB_URL")
+            ACCESS_TOKEN = os.getenv("gitlab_key")
+            gl = gitlab.Gitlab(GITLAB_URL, private_token=ACCESS_TOKEN)
+            project = gl.projects.get(project_id)
+            try :
+                # Use an empty string to fetch from the root directory if log_path is "/"
+                effective_path = None if log_path == "/" else log_path
+                
+                if log_path == "/":
+                    items = project.repository_tree(ref=branch_name,recursive=False)
+                else :
+                    # Fetch the file list from the specified path and branch
+                    items = project.repository_tree(path=effective_path, ref=branch_name, recursive=True)
+                
+                # Filter for log files (e.g., .log or .txt files)
+                log_files = [item for item in items if item['type'] == 'blob' and (item['name'].endswith('.log') or item['name'].endswith('.txt'))]
+                # If no log files are found, return a message
+                if not log_files:
+                    return [{"name": "No log files in the specified path", "content": "No log files in the specified path"}]
+                # Define a helper function to fetch file content asynchronously
+                async def fetch_file_content(file):
+                    file_path = file['path']
+                    file_content = await asyncio.to_thread(project.files.get, file_path=file_path, ref=branch_name)
+                    return {"name": file['name'], "content": file_content.decode()}  # Decode content to string
+                
+                # Asynchronously fetch all file contents
+                log_file_data = await asyncio.gather(*(fetch_file_content(file) for file in log_files))
+                
+                return log_file_data
+            except Exception as e:
+                return [{"name": "No log files in the specified path", "content": "No log files in the specified path"}]
+        except Exception as e:
+            self.langfuse_client.log_and_raise_error(f"DataIngestion_pipeline -> Error fetching log files from gitlab: {str(e)}", self.conversation.trace_id)
+            return [{"name": "No log files in the specified path", "content": "No log files in the specified path"}]
+    
+    
+    
+    
     async def fetch_log_files(self, project_id):
         """Fetches log file paths in a GitLab project repository."""
         try:

@@ -7,6 +7,7 @@ import asyncio
 import re
 import aiofiles
 import textwrap
+import tiktoken
 
 
 class DataProcessing_csv:

@@ -176,7 +176,7 @@ LOG_FILES_ANALYSIS_SYSTEM_PROMPT_LOGS = '''
 
 3. **Add a Heading for Each Issue:**
    # - For each identified issue, add a **Heading** field. This field should include the issue type (Error or Warning) and a concise summary of the problem.
-   # - For example: "GitLab Runner Initialization & Kubernetes Executor Warnings," "Fatal Error: Unsupported Build System," or "Artifact Upload on Failure".
+   # - For example: "GitLab Runner Initialization & Kubernetes Executor Warnings," "Fatal Error: Unsupported Build System," .
 
 4. **Capture Additional Contextual Information:**
    # - Record the following details as specified within the logs:
