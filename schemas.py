@@ -2,6 +2,7 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 from enum import Enum
 from typing import Dict, Any
+from datetime import datetime
 
 
 
@@ -69,6 +70,7 @@ class associatedmergerequests(BaseModel):
 
 class DetailedResponse(BaseModel):
     heading: str
+    Date: Optional[str] = None
     error_message: str
     line_number: Optional[int] = None
     file_impacted: Optional[str] = None
