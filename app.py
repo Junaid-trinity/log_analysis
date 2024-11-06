@@ -164,6 +164,9 @@ async def main():
                             st.markdown(f"<div class='custom-box'><div class='custom-heading'> {error_number}: {error.get('heading', 'N/A')}</div></div>", unsafe_allow_html=True)
                             doc.add_paragraph(f"{error_number}: {error.get('heading', 'N/A')}", style="Heading2")
                             error_number += 1
+                            if error.get('Date'):
+                                st.write(f"**Date:** {error.get('Date')}")
+                                doc.add_paragraph(f"**Date:** {error.get('Date')}")
                             st.write(f"**Error Message:** {error.get('error_message', 'N/A')}")
                             doc.add_paragraph(f"**Error Message:** {error.get('error_message', 'N/A')}")
                             st.write(f"**Line Number:** {error.get('line_number') if error.get('line_number') is not None else 'Information not available in logs'}")
@@ -289,6 +292,9 @@ async def main():
                             st.markdown(f"<div class='custom-box'><div class='custom-heading'> {error_number}: {error.get('heading', 'N/A')}</div></div>", unsafe_allow_html=True)
                             doc.add_paragraph(f"{error_number}: {error.get('heading', 'N/A')}", style="Heading2")
                             error_number += 1
+                            if error.get('Date'):
+                                st.write(f"**Date:** {error.get('Date')}")
+                                doc.add_paragraph(f"**Date:** {error.get('Date')}")
                             st.write(f"**Error Message:** {error.get('error_message', 'N/A')}")
                             doc.add_paragraph(f"**Error Message:** {error.get('error_message', 'N/A')}")
                             st.write(f"**Line Number:** {error.get('line_number') if error.get('line_number') is not None else 'Information not available in screenshot'}")
@@ -429,6 +435,9 @@ async def main():
                         st.markdown(f"<div class='custom-box'><div class='custom-heading'> {error_number}: {error.get('heading', 'N/A')}</div></div>", unsafe_allow_html=True)
                         doc.add_paragraph(f"{error_number}: {error.get('heading', 'N/A')}", style="Heading2")
                         error_number += 1
+                        if error.get('Date'):
+                                st.write(f"**Date:** {error.get('Date')}")
+                                doc.add_paragraph(f"**Date:** {error.get('Date')}")
                         st.write(f"**Error Message:** {error.get('error_message', 'N/A')}")
                         doc.add_paragraph(f"**Error Message:** {error.get('error_message', 'N/A')}")
                         st.write(f"**Line Number:** {error.get('line_number') if error.get('line_number') is not None else 'Information not available in logs'}")

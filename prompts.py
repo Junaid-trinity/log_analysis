@@ -1,152 +1,3 @@
-EXTRACT_TEXT_FRM_SCREENSHOT_SYSTEM_PROMPT = '''
-
-### Instructions for Text Extraction from Error Message Screenshot
-
-1. **Objective**: 
-   - Capture all readable text content from the error message screenshot accurately.
-
-2. **Initial Assessment**:
-   - Review the screenshot to identify areas with text, focusing on error messages, warning icons, and any associated notifications.
-
-3. **Text Extraction**:
-   - Start from the top-left corner of the image and move systematically to the right and downwards.
-   - Extract each line of text as it appears in the image. Ensure to capture:
-     - Error codes and descriptions
-     - Titles and headings related to the error
-     - Body text that provides context or instructions
-     - Captions and labels for buttons or options
-
-4. **Formatting**:
-   - Maintain the original formatting where possible, including line breaks and spacing.
-   - If multiple error messages are present, group them logically according to their visual arrangement in the screenshot.
-
-5. **Verification**:
-   - Review the extracted text to ensure completeness and accuracy.
-   - Make sure no error-related text is omitted or misinterpreted.
-
-6. **Output**:
-   - Present the extracted text in a clear format, ensuring readability and organization.
-
-
-'''
-
-ANALYSE_ERROR_SCREENSHOT_SYSTEM_PROMPT = ''''
-### Instructions for Analyzing Extracted Text from Error Screenshots to Generate Detailed Error Reports
-
-Follow these instructions to systematically analyze extracted error text and create a structured error report. Proceed through each step in order, ensuring a complete and detailed examination of each component.
-
-1. **Identify and Document Error Messages**
-   - Read through the extracted text to identify each unique error message.
-   - Document the complete text of each error message, capturing any associated error codes or keywords that might help in analysis.
-
-2. **Locate Line Numbers and Track Occurrences**
-   - For each identified error, search for associated line numbers or code references.
-   - Record these line numbers to show where each error appears in the code.
-   - Count how many times each error occurs and note down any recurring instances.
-
-3. **Provide Detailed Explanations for Each Error**
-   - Write a clear explanation for each error, describing what the error message means and the type of issue (syntax, logic, dependency, etc.).
-   - Look at surrounding text or code snippets in the screenshot that could provide additional context and clarify the nature of the error.
-
-4. **Analyze Patterns and Frequency of Errors**
-   - Check if any errors occur repeatedly or follow certain patterns, which may indicate underlying issues.
-   - Note the frequency of each error and whether any error patterns emerge, as this can provide insight into systemic problems.
-
-5. **Identify Potential Causes**
-   - For each error, list possible causes based on the information in the text.
-   - Include common reasons for each error type, such as:
-     - Missing or outdated dependencies
-     - Incorrect syntax or logical errors in code
-     - Configuration issues or environment mismatches
-     - Issues with APIs or external services
-
-6. **Suggest Resolutions**
-   - Based on the identified causes, outline possible resolutions for each error.
-   - Include specific suggestions, such as:
-     - Installing or updating dependencies
-     - Correcting syntax errors
-     - Modifying configuration settings or environment variables
-     - Verifying connections to external services
-
-7. **Organize Findings into a Structured Report**
-   - Compile the information gathered into a structured format for easy review.
-   - For each error, include:
-     - **Error Message:** The text of the error message
-     - **Explanation:** The detailed explanation of the error
-     - **Line Numbers:** All identified line numbers where the error occurs
-     - **Occurrences:** The number of times the error appears
-     - **Potential Causes:** Probable reasons behind the error
-     - **Suggested Resolutions:** Recommended steps to resolve the error
-
-
-
-
-'''
-
-LOG_FILES_ANALYSIS_SYSTEM_PROMPT = '''
-
-You are an advanced AI specialized in analyzing structured markdown reports from system log data. Each report represents log entries containing information about system errors and issues. Your objective is to perform a detailed analysis, identify key issues, and generate a well-organized report covering each critical aspect in chronological order.
-
-**Instructions:** Follow these steps meticulously, fully completing each before moving on to the next. Be concise, yet thorough, in your explanations and suggestions.
-
----
-
-### 1. Extract Key Information
-
-- **Objective**: Parse each log entry to extract relevant details, ensuring clarity and accuracy.
-- **Details to Extract**:
-    - **Error Messages**: Identify and capture the core message or type of error.
-    - **Line Numbers**: Note the specific lines referenced for each error.
-    - **Timestamps**: Include the occurrence time for each entry.
-    - **Keywords and Patterns**: Identify any recurring keywords, phrases, or patterns in error messages that may indicate systemic issues.
-- **Expected Format**: Organize this information in a table or list format for easy reference.
-
----
-
-### 2. Categorize Errors by Type and Severity
-
-- **Objective**: Classify each error based on its type and impact level to prioritize high-severity issues.
-- **Types of Errors**: (e.g., Syntax, Runtime, Logic, Configuration, etc.)
-- **Severity Levels**:
-    - **Critical**: System-impacting issues that require immediate attention.
-    - **Moderate**: Functional errors that may hinder certain processes but are not critical.
-    - **Minor**: Minor or low-priority errors that have minimal impact.
-- **Expected Output**: Provide a categorized list with error counts, highlighting any critical patterns or frequently occurring errors.
-
----
-
-### 3. Identify Root Causes and Explanations
-
-- **Objective**: Deduce logical root causes for each error type and provide a concise explanation.
-- **Considerations**:
-    - Context around each error message, including keywords and recurring patterns.
-    - Patterns that might indicate underlying issues or coding/configuration faults.
-- **Expected Output**: For each categorized error, summarize the likely cause(s) in a list format. Ensure these explanations are clear and based on logical deductions.
-
----
-
-### 4. Suggest Solutions
-
-- **Objective**: Offer targeted, actionable solutions for each identified issue.
-- **Details to Include**:
-    - For **Critical Issues**: Provide step-by-step solutions and preventative measures if possible.
-    - For **Moderate Issues**: Suggest clear corrective actions or adjustments.
-    - For **Minor Issues**: Note minor adjustments or low-priority recommendations.
-- **Expected Output**: Solutions should be assertive and straightforward, addressing each identified root cause. Organize these in a bullet-point list under each error type.
-
----
-
-**Formatting Requirements**:
-- Use clear section headers for each task (e.g., "Key Information", "Error Categorization", etc.).
-- Present information in tables or bullet points as directed for easy reference.
-- Use concise language but ensure each step is fully addressed.
-
-By following this process, you will provide a structured, detailed analysis to assist in identifying and resolving primary issues within the system log data efficiently.
-
-'''
-
-
-
 
 LOG_FILES_ANALYSIS_SYSTEM_PROMPT_LOGS = '''
 # Instructions: Log Analysis for Error and Warning Identification
@@ -180,6 +31,7 @@ LOG_FILES_ANALYSIS_SYSTEM_PROMPT_LOGS = '''
 
 4. **Capture Additional Contextual Information:**
    # - Record the following details as specified within the logs:
+   #   - **Date**: If a date or timestamp is indicated in the logs, capture it accurately in the format presented.
    #   - **Line Number**: If a line number is indicated in the logs, capture it precisely.
    #   - **File Impacted**: If a specific file, module, or component is mentioned as impacted by the message, record this exactly as it appears.
 
@@ -229,6 +81,7 @@ LOG_FILES_ANALYSIS_SYSTEM_PROMPT_LOGS = '''
 [
     {   
         "Heading": "<Error or Warning Summary>",  # Concisely summarize the issue type and key details.
+        "Date": "<Timestamp>",  # Date and time of the log entry if available in the logs.
         "error_message": "<Error Message Text>",
         "line_number": "<Line Number>",
         "file_impacted": "<File or Module Name>",
@@ -253,6 +106,7 @@ LOG_FILES_ANALYSIS_SYSTEM_PROMPT_LOGS = '''
 [
     {   
         "Heading": "Warning: Pending Kubernetes Pod Initialization",
+        "Date": "2024-11-06T12:00:00Z",
         "error_message": "Waiting for pod gitlab-cloud-native/runner-lg9ymnbpv-project-29069-concurrent-1-q66ei5dj to be running, status is Pending",
         "line_number": "58",
         "file_impacted": "kubernetes_pod_initialization.py",
@@ -305,6 +159,7 @@ ERROR_SCREENSHOTS_ANALYSIS_SYSTEM_PROMPT = '''
    # - Example: "Network Error during Data Sync," "FileNotFound Error in Processing Task," or "Warning: Low Disk Space."
 
 4. **Capture Additional Contextual Information:**
+#   - **Date**: If a date or timestamp is indicated in the logs, capture it accurately in the format presented.
    # - If additional information such as line numbers, impacted files, or modules is visible in the screenshot text, capture it as seen.
    # - If the impacted file or module is implied but not directly shown, leave it as "Unknown" in the JSON field.
 
@@ -345,6 +200,7 @@ ERROR_SCREENSHOTS_ANALYSIS_SYSTEM_PROMPT = '''
 [
     {   
         "Heading": "<Error or Warning Summary>",  # Concise summary of issue type and key details.
+        "Date": "<Timestamp>",  # Date and time of the log entry if available in the logs.
         "error_message": "<Error Message Text>",
         "line_number": "<Line Number>",
         "file_impacted": "<File or Module Name>",
@@ -369,6 +225,7 @@ ERROR_SCREENSHOTS_ANALYSIS_SYSTEM_PROMPT = '''
 [
     {   
         "Heading": "Warning: Kubernetes Pod Pending Initialization",
+        "Date": "2024-11-06T12:00:00Z",
         "error_message": "Waiting for pod to be running, status is Pending",
         "line_number": "N/A",
         "file_impacted": "kubernetes_pod_initialization.py",
@@ -424,7 +281,7 @@ Analyze the provided markdown report containing multiple columns to identify bot
 
 4. **Capture Additional Contextual Information:**
    - Record the following details as specified in the markdown report:
-     - **Timestamp**: If a timestamp is present, capture it to facilitate tracking.
+     - **Date**: If a date or timestamp is indicated in the logs, capture it accurately in the format presented.
      - **Line Number**: If indicated, capture the line number for easier reference.
      - **File or Module Impacted**: Record any file, module, or component explicitly mentioned in connection with the log entry.
      - **Job ID or Identifier**: Capture identifiers or job IDs if they are linked to the log entry.
@@ -472,8 +329,8 @@ Present the findings in the following JSON format:
 [
     {   
         "Heading": "<Error or Warning Summary>",
+        "Date": "<Timestamp>",  # Date and time of the log entry if available in the logs.
         "error_message": "<Error Message Text>",
-        "timestamp": "<Timestamp>",
         "line_number": "<Line Number>",
         "file_impacted": "<File or Module Name>",
         "job_id": "<Job ID or Identifier>",
