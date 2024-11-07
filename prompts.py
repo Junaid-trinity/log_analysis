@@ -378,7 +378,7 @@ Detect and document any log entries that indicate an error or warning message, e
    - For each identified error or warning, create a structured JSON entry. Fill out the following fields:
 
       - **Heading:** Summarize the issue type (Error or Warning) and briefly describe the problem based on the log message.
-      - **Date:** Extract and record any date or timestamp from the log entry, preserving its original format.
+      - **Date:** Extract and record any date or timestamp from the log entry in the exact format present in the logs. **Do not interpret or treat date format issues as errors; simply record the date as it appears in the logs.**
       - **Line Number:** Capture any line number included in the log message for reference.
       - **File or Module Impacted:** Note any file, module, or component mentioned in the log entry.
       - **Error Message:** Copy the full error or warning message text as it appears in the log.
@@ -433,3 +433,93 @@ For each detected issue, format the output as follows:
 ]
 
 '''
+
+LOG_FILES_ANALYSIS_SYSTEM_PROMPT_LOGS_CSV = '''
+
+You are analyzing a markdown report generated from a CSV log file to identify and categorize issues based on error and warning patterns in the log messages. Follow these instructions carefully, without assuming additional information beyond the content in the markdown.
+
+### Objective
+Detect and document any log entries that indicate an error or warning message, even if these labels are not explicitly mentioned. Analyze each log entry to identify potential issues by recognizing common patterns and keywords.
+
+### Markdown Report Structure
+The markdown report contains the following sections:
+
+- **Title**: `# **Error Log Data**:`
+- **Separator Line**: `-------------------------------------------------`
+- **Table Header**: The table columns are displayed at the top, listing fields relevant to the logs. The header row is followed by a separator row (`| --- | --- | ... |`) to structure the data.
+- **Row Data**: Each row of data represents an individual log entry. Cells exceeding a character limit (default is 50) are wrapped to enhance readability. 
+
+### Instructions
+
+1. **Identify the Log Information Column:**
+   - Find the column in the markdown report containing the core log message information. This column will serve as the main source for extracting issues.
+
+2. **Identify Errors and Warnings without Explicit Labels:**
+   - **Look for Common Error and Warning Keywords**:
+      - Identify entries with keywords typically associated with errors and warnings, including:
+         - **Errors:** "failed," "exception," "cannot," "critical," "not found," "unable to," "denied," "timeout," "fatal."
+         - **Warnings:** "deprecated," "warning," "slow," "skipped," "retrying," "unstable," "invalid," "exceeds."
+   - **Assess Log Severity Levels (If Available):**
+      - If the logs have severity levels, such as "ERROR," "WARNING," or "INFO," consider entries with “ERROR” as errors and entries with “WARNING” as warnings.
+   - **Identify Patterns Indicating Problems:**
+      - Spot repetitive messages or phrases that suggest retry attempts, failures, or inconsistent states. Repetitions often signal a problem that failed to resolve.
+
+3. **Create an Organized Output Structure for Each Issue:**
+   - For each identified error or warning, create a structured JSON entry. Fill out the following fields:
+
+      - **Heading:** Summarize the issue type (Error or Warning) and briefly describe the problem based on the log message.
+      - **Date:** Extract and record any date or timestamp from the log entry in the exact format present in the logs. **Do not interpret or treat date format issues as errors; simply record the date as it appears in the logs.**
+      - **Line Number:** Capture any line number included in the log message for reference.
+      - **File or Module Impacted:** Note any file, module, or component mentioned in the log entry.
+      - **Error Message:** Copy the full error or warning message text as it appears in the log.
+
+4. **Determine Possible Causes:**
+   - Based on patterns, repeated entries, or the specific language of each message, identify potential causes that are clear from the log content.
+   - Do not make assumptions beyond what is evident in the log messages.
+
+5. **Suggest Solutions in JSON Format:**
+   - For each issue, propose solutions tailored to the identified cause, such as configuration updates or troubleshooting steps.
+   - If a code correction is applicable, provide a **code fix** in the following format:
+
+      ```json
+      [
+          {
+              "suggested_solution": "<Textual Solution>",
+              "code_fix": {
+                  "original_code": "<Original Code Snippet>",
+                  "corrected_code": "<Corrected Code Snippet>"
+              }
+          }
+      ]
+      ```
+
+6. **Identify Associated Merge Requests or Commits (if any):**
+   - Capture references to any merge requests, commits, or identifiers if these are mentioned in connection with the log entry.
+
+### Required JSON Output Format
+For each detected issue, format the output as follows:
+
+```json
+[
+    {
+        "Heading": "<Error or Warning Summary>",
+        "Date": "<Timestamp>",
+        "error_message": "<Error Message Text>",
+        "line_number": "<Line Number>",
+        "file_impacted": "<File or Module Name>",
+        "possible_causes": "<Possible Causes>",
+        "suggested_solutions": [
+            {
+                "suggested_solution": "<Textual Solution>",
+                "code_fix": {
+                    "original_code": "<Original Code Snippet>",
+                    "corrected_code": "<Corrected Code Snippet>"
+                }
+            }
+        ],
+        "associated_merge_requests": ["<Merge Request 1>", "<Merge Request 2>"]
+    },
+    ...
+]
+'''
+
