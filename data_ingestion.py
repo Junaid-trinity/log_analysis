@@ -16,27 +16,14 @@ class DataIngestion:
         self.langfuse_client = LangfuseClient()
         self.conversation = Conversation()
         
-    def _start_trace(self):
-        """Helper method to start a new trace and return its ID."""
-        if self.langfuse_client.langfuse:
-            trace = self.langfuse_client.langfuse.trace(
-                name="Image-Files-Analysis-Agent",
-                input=self.conversation.query,
-                start_time=time.time(),
-                tags=["development"],
-                public=False,
-            )
-            return trace.id
-        else:
-            return None
+    
 
     async def load_error_log(self, uploaded_files):
         """Asynchronously processes multiple error log files in parallel."""
         
         async def load_single_file(file):
             """Asynchronously loads a single CSV file."""
-            if self.conversation.trace_id is None:
-                self.conversation.trace_id = self._start_trace()
+           
             try:
                 data = pd.read_csv(file)
                 return data

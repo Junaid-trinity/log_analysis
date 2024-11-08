@@ -113,12 +113,128 @@ async def main():
                 if csv_files:
                     data_frames = await data_ingestion.load_error_log(uploaded_files)
                     log_file_responses = await LogFilesAnalysisagent_csv.execute_agent(data_frames)
+                   
+                    doc = Document()
+                    heading = doc.add_heading("Error Log Analysis Report", level=1)
+                    heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # Center-align the heading
+                    file_number = 1  # File counter
+                    for file_name , response in zip(csv_files, log_file_responses):
+                        st.subheader(f"**File {file_number}:** {file_name.name}")  # Display the file
+                        doc.add_heading(f"File {file_number}: {file_name.name}", level=2)
+                        file_number += 1
+                        st.write("### Error Report")
+                        st.markdown("""
+                            <style>
+                                .custom-box {
+                                    background-color: #f0f4f8;  /* Light grey-blue background */
+                                    padding: 15px;
+                                    border-radius: 8px;
+                                    margin-bottom: 10px;
+                                }
+                                .custom-heading {
+                                    color: #333333;  /* Darker text color for better readability */
+                                    font-weight: bold;
+                                    font-size: 24px;  /* Increase font size for the heading */
+                                    margin-bottom: 10px;
+                                }
+                            </style>
+                        """, unsafe_allow_html=True)
+                        error_number = 1
+                        for error_analyzed in log_file_responses:
+                            for error in error_analyzed:
+                                st.markdown(f"<div class='custom-box'><div class='custom-heading'> {error_number}: {error.get('heading', 'N/A')}</div></div>", unsafe_allow_html=True)
+                                doc.add_paragraph(f"{error_number}: {error.get('heading', 'N/A')}", style="Heading2")
+                                error_number += 1
+                                if error.get('Date'):
+                                    st.write(f"**Date:** {error.get('Date')}")
+                                    doc.add_paragraph(f"**Date:** {error.get('Date')}")
+                                st.write(f"**Error Message:** {error.get('error_message', 'N/A')}")
+                                doc.add_paragraph(f"**Error Message:** {error.get('error_message', 'N/A')}")
+                                st.write(f"**Line Number:** {error.get('line_number') if error.get('line_number') is not None else 'Information not available in logs'}")
+                                doc.add_paragraph(f"**Line Number:** {error.get('line_number') if error.get('line_number') is not None else 'Information not available in logs'}")
+                                st.write(f"**File Impacted:** {error.get('file_impacted') if error.get('file_impacted') is not None else 'Information not available in logs'}")
+                                doc.add_paragraph(f"**File Impacted:** {error.get('file_impacted') if error.get('file_impacted') is not None else 'Information not available in logs'}")
+                                st.write(f"**Possible Cause(s):** {error.get('possible_cause', 'N/A')}")
+                                doc.add_paragraph(f"**Possible Cause(s):** {error.get('possible_cause', 'N/A')}")
+                                suggested_solution = error.get('suggested_solutions', {})
+                                st.write(f"**Suggested Solution:** {suggested_solution.get('suggested_solution', 'N/A')}")
+                                doc.add_paragraph(f"**Suggested Solution:** {suggested_solution.get('suggested_solution', 'N/A')}")
                 
-                    # Display each result
-                    for i, data in enumerate(log_file_responses):
-                        for batch_report in data:  # Each 'data' item is a list of batch reports
-                            st.write(batch_report)
-                
+                            # Display Original and Corrected Code only if they exist
+                            code_fix = suggested_solution.get('code_fix')
+                            if code_fix:
+                                    original_code = code_fix.get('original_code', None)
+                                    corrected_code = code_fix.get('corrected_code', None)
+                                    
+                                    if original_code:
+                                        st.write("**Original Code:**")
+                                        doc.add_paragraph("Original Code:", style="Heading3")
+                                        st.code(original_code, language='python')
+                                        # Add original code block with monospaced font
+                                        original_code_paragraph = doc.add_paragraph()
+                                        original_code_run = original_code_paragraph.add_run(original_code)
+                                        original_code_run.font.name = 'Courier New'
+                                        original_code_run.font.size = Pt(10)
+                                        
+                                        
+                                        # Optional: Add a border around the code block
+                                        original_code_paragraph_format = original_code_paragraph.paragraph_format
+                                        p = original_code_paragraph._element
+                                        pPr = p.get_or_add_pPr()
+                                        pBdr = OxmlElement("w:pBdr")
+                                        for border_name in ["top", "bottom", "left", "right"]:
+                                            border = OxmlElement(f"w:{border_name}")
+                                            border.set(qn("w:val"), "single")
+                                            border.set(qn("w:sz"), "4")
+                                            border.set(qn("w:space"), "1")
+                                            border.set(qn("w:color"), "auto")
+                                            pBdr.append(border)
+                                        pPr.append(pBdr)
+                                        
+                                        
+                                        
+                                    if corrected_code:
+                                        st.write("**Corrected Code:**")
+                                        doc.add_paragraph("Corrected Code:", style="Heading3")
+                                        st.code(corrected_code, language='python')
+                                        # Add corrected code block with monospaced font
+                                        corrected_code_paragraph = doc.add_paragraph()
+                                        corrected_code_run = corrected_code_paragraph.add_run(corrected_code)
+                                        corrected_code_run.font.name = 'Courier New'
+                                        corrected_code_run.font.size = Pt(10)
+                                        
+                                        
+                                                                    # Optional: Add a border around the corrected code block
+                                        corrected_code_paragraph_format = corrected_code_paragraph.paragraph_format
+                                        p = corrected_code_paragraph._element
+                                        pPr = p.get_or_add_pPr()
+                                        pBdr = OxmlElement("w:pBdr")
+                                        for border_name in ["top", "bottom", "left", "right"]:
+                                            border = OxmlElement(f"w:{border_name}")
+                                            border.set(qn("w:val"), "single")
+                                            border.set(qn("w:sz"), "4")
+                                            border.set(qn("w:space"), "1")
+                                            border.set(qn("w:color"), "auto")
+                                            pBdr.append(border)
+                                        pPr.append(pBdr)
+                                
+                            st.write(f"**Associated Merge Requests:** {error.get('associated_merge_requests', 'N/A')}")
+                            doc.add_paragraph(f"**Associated Merge Requests:** {error.get('associated_merge_requests', 'N/A')}")
+                            doc.add_paragraph("\n")
+                            st.markdown('</div>', unsafe_allow_html=True)  # Close custom div  
+                            
+                    buffer = BytesIO()
+                    doc.save(buffer)
+                    buffer.seek(0)       
+                    download_button_placeholder.download_button(
+                        label="Download Error Report",
+                        data=buffer,
+                        file_name="error_log_analysis_report.docx",
+                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    ) 
+                                
+                                
+                                
                 if log_files:
                     temp_log_files = {}
                     file_number = 1  # File counter
